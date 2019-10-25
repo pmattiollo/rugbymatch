@@ -15,8 +15,8 @@ data class Scrum(override val teamThrowingIn : Team, override val otherTeam: Tea
     }
 
 }
-data class LineOut(override val teamThrowingIn : Team, override val otherTeam: Team, val numberOfPlayersTeamThrowingIn: Int, val numberOfPlayersOtherTeam: Int) : SetPiece {
+data class LineOut(override val teamThrowingIn : Team, override val otherTeam: Team) : SetPiece {
     override fun isValid(): Boolean {
-        return numberOfPlayersOtherTeam == numberOfPlayersOtherTeam
+        return teamThrowingIn.nrOfPlayersInLineOut == otherTeam.nrOfPlayersInLineOut
     }
 }

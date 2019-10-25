@@ -6,7 +6,7 @@ import com.paulienvanalst.rugbymatch.team.Position
 import com.paulienvanalst.rugbymatch.team.Team
 
 class TeamTestData {
-    fun  inValidTeam (teamName: TeamName) : Team {
+    fun inValidTeam (teamName: TeamName) : Team {
         return Team(players = backPlayers(), name = teamName)
     }
 

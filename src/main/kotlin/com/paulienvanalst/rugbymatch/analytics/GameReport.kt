@@ -1,9 +1,11 @@
 package com.paulienvanalst.rugbymatch.analytics
 
-import com.paulienvanalst.rugbymatch.team.TeamName
 import com.paulienvanalst.rugbymatch.events.*
-import com.paulienvanalst.rugbymatch.game.*
-import com.paulienvanalst.rugbymatch.team.NotImplementedException
+import com.paulienvanalst.rugbymatch.game.GameScore
+import com.paulienvanalst.rugbymatch.game.LineOut
+import com.paulienvanalst.rugbymatch.game.ScoringBoard
+import com.paulienvanalst.rugbymatch.game.Scrum
+import com.paulienvanalst.rugbymatch.team.TeamName
 import org.apache.logging.log4j.LogManager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.ApplicationEvent
@@ -18,10 +20,7 @@ open class GameReporter {
     @Autowired
     private lateinit var scoringBoard: ScoringBoard
 
-    @Autowired
-    private lateinit var eventPublisher: ApplicationEventPublisher
-
-    private lateinit var gameReport : GameReport
+    lateinit var gameReport : GameReport
 
     @EventListener
     fun startTheReport(startGame: StartGame) {
@@ -42,7 +41,7 @@ open class GameReporter {
 
     @EventListener
     fun updatingReportAfterSetPiece(setPieceEvent: SetPieceEvent) {
-        throw NotImplementedException()
+        gameReport.addSetPieceEvents(setPieceEvent)
     }
 
 }
@@ -60,8 +59,11 @@ class GameReport (val hostingTeam : TeamName, val visitingTeam : TeamName) {
 
 
     fun addSetPieceEvents(setPieceEvent: SetPieceEvent) {
-        throw NotImplementedException()
-
+        if (setPieceEvent is ScrumWasPlayed) {
+            this.scrums += setPieceEvent.setPiece as Scrum
+        } else if (setPieceEvent is LineOutWasPlayed) {
+            this.lineOuts += setPieceEvent.setPiece as LineOut
+        }
     }
 
     fun setHalfTimeScore(gameScore: GameScore) {
